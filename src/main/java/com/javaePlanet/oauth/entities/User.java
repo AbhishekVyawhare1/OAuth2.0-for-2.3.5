@@ -1,41 +1,26 @@
 package com.javaePlanet.oauth.entities;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-
-//@Getter
-//@Setter
-//@AllArgsConstructor
-//@NoArgsConstructor
-//@ToString
-@Entity
+@Document(collection = "users") // Specifies the MongoDB collection name
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@Id // Marks the field as the primary identifier
+	private String id; // Using String as ID type for MongoDB
+
 	private String name;
 	private String password;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_roles", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "role_id") })
 	private Set<Role> roles;
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -63,7 +48,7 @@ public class User {
 		this.roles = roles;
 	}
 
-	public User(Integer id, String name, String password, Set<Role> roles) {
+	public User(String id, String name, String password, Set<Role> roles) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -79,5 +64,4 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", password=" + password + ", roles=" + roles + "]";
 	}
-
 }

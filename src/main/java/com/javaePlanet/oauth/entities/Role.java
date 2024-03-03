@@ -1,41 +1,39 @@
 package com.javaePlanet.oauth.entities;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-
-import org.springframework.security.core.GrantedAuthority;
-
-
-//@Getter
-//@Setter
-//@AllArgsConstructor
-//@NoArgsConstructor
-//@ToString
-@Entity
+@Document(collection = "roles") // Specifies the MongoDB collection name
 public class Role implements GrantedAuthority {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+	@Id // Marks the field as the primary identifier
+	private String id; // Using String as ID type for MongoDB
 
-    @Override
-    public String getAuthority() {
-        return name;
-    }
+	private String name;
 
-	public Integer getId() {
+	private Set<User> users;
+
+	@Override
+	public String getAuthority() {
+		return name;
+	}
+
+	public Role(String id, String name, Set<User> users) {
+		this.id = id;
+		this.name = name;
+		this.users = users;
+	}
+
+	public Role() {
+	}
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -55,23 +53,12 @@ public class Role implements GrantedAuthority {
 		this.users = users;
 	}
 
-	public Role(Integer id, String name, Set<User> users) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.users = users;
-	}
 
-	public Role() {
-		super();
-	}
+
+	// Constructors, getters, and setters omitted for brevity
 
 	@Override
 	public String toString() {
 		return "Role [id=" + id + ", name=" + name + ", users=" + users + "]";
 	}
-    
-    
-
-    // Constructors, getters, and setters omitted for brevity
 }
